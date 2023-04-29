@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
-import { EncounterContext } from '../ohri-form-context';
-import { OHRIFormField } from '../api/types';
+import { EncounterContext } from '../form-context';
+import { FormField } from '../types';
 import { findObsByFormField, ObsSubmissionHandler } from './base-handlers';
 
 const encounterContext: EncounterContext = {
@@ -23,7 +23,7 @@ describe('ObsSubmissionHandler - handleFieldSubmission', () => {
   // new submission (enter mode)
   it('should handle submission for text input', () => {
     // setup
-    const field: OHRIFormField = {
+    const field: FormField = {
       label: 'Visit note',
       type: 'obs',
       questionOptions: {
@@ -51,7 +51,7 @@ describe('ObsSubmissionHandler - handleFieldSubmission', () => {
 
   it('should handle submission for number input', () => {
     // setup
-    const field: OHRIFormField = {
+    const field: FormField = {
       label: 'Temperature',
       type: 'obs',
       questionOptions: {
@@ -79,7 +79,7 @@ describe('ObsSubmissionHandler - handleFieldSubmission', () => {
 
   it('should handle submission for multiselect input', () => {
     // setup
-    const field: OHRIFormField = {
+    const field: FormField = {
       label: 'Past enrolled patient programs',
       type: 'obs',
       questionOptions: {
@@ -156,7 +156,7 @@ describe('ObsSubmissionHandler - handleFieldSubmission', () => {
 
   it('should handle submission for date input', () => {
     // setup
-    const field: OHRIFormField = {
+    const field: FormField = {
       label: 'HTS Date',
       type: 'obs',
       questionOptions: {
@@ -185,7 +185,7 @@ describe('ObsSubmissionHandler - handleFieldSubmission', () => {
 
   it('should handle submission for single-select inputs', () => {
     // setup
-    const field: OHRIFormField = {
+    const field: FormField = {
       label: 'HTS Result',
       type: 'obs',
       questionOptions: {
@@ -219,7 +219,7 @@ describe('ObsSubmissionHandler - handleFieldSubmission', () => {
   it('should edit obs text/number value in edit mode', () => {
     // setup
     encounterContext.sessionMode = 'edit';
-    const field: OHRIFormField = {
+    const field: FormField = {
       label: 'Visit note',
       type: 'obs',
       questionOptions: {
@@ -260,7 +260,7 @@ describe('ObsSubmissionHandler - handleFieldSubmission', () => {
   it('should edit obs coded value in edit mode', () => {
     // setup
     encounterContext.sessionMode = 'edit';
-    const field: OHRIFormField = {
+    const field: FormField = {
       label: 'HTS Result',
       type: 'obs',
       questionOptions: {
@@ -303,7 +303,7 @@ describe('ObsSubmissionHandler - handleFieldSubmission', () => {
   it('should edit obs value(s) from multiselect input component', () => {
     // setup
     encounterContext.sessionMode = 'edit';
-    const field: OHRIFormField = {
+    const field: FormField = {
       label: 'Past enrolled patient programs',
       type: 'obs',
       questionOptions: {
@@ -376,7 +376,7 @@ describe('ObsSubmissionHandler - handleFieldSubmission', () => {
   it('should edit obs date value in edit mode', () => {
     // setup
     encounterContext.sessionMode = 'edit';
-    const field: OHRIFormField = {
+    const field: FormField = {
       label: 'HTS date',
       type: 'obs',
       questionOptions: {
@@ -417,7 +417,7 @@ describe('ObsSubmissionHandler - handleFieldSubmission', () => {
   it('should void deleted obs text/number value in edit mode', () => {
     // setup
     encounterContext.sessionMode = 'edit';
-    const field: OHRIFormField = {
+    const field: FormField = {
       label: 'Visit note',
       type: 'obs',
       questionOptions: {
@@ -458,7 +458,7 @@ describe('ObsSubmissionHandler - handleFieldSubmission', () => {
   it('should void deleted obs coded value in edit mode', () => {
     // setup
     encounterContext.sessionMode = 'edit';
-    const field: OHRIFormField = {
+    const field: FormField = {
       label: 'HTS Result',
       type: 'obs',
       questionOptions: {
@@ -497,7 +497,7 @@ describe('ObsSubmissionHandler - handleFieldSubmission', () => {
   it('should void deleted obs coded value(s) from a multiselect input component', () => {
     // setup
     encounterContext.sessionMode = 'edit';
-    const field: OHRIFormField = {
+    const field: FormField = {
       label: 'Past enrolled patient programs',
       type: 'obs',
       questionOptions: {
@@ -548,7 +548,7 @@ describe('ObsSubmissionHandler - handleFieldSubmission', () => {
     // setup
     encounterContext.sessionMode = 'edit';
     const htsDate = new Date(2020, 11, 16);
-    const field: OHRIFormField = {
+    const field: FormField = {
       label: 'HTS date',
       type: 'obs',
       questionOptions: {
@@ -588,7 +588,7 @@ describe('ObsSubmissionHandler - handleFieldSubmission', () => {
 describe('ObsSubmissionHandler - getInitialValue', () => {
   it('should get initial value for text rendering', () => {
     // setup
-    const field: OHRIFormField = {
+    const field: FormField = {
       label: 'Visit note',
       type: 'obs',
       questionOptions: {
@@ -613,7 +613,7 @@ describe('ObsSubmissionHandler - getInitialValue', () => {
 
   it('should get initial value for number rendering', () => {
     // setup
-    const field: OHRIFormField = {
+    const field: FormField = {
       label: 'Temperature',
       type: 'obs',
       questionOptions: {
@@ -638,7 +638,7 @@ describe('ObsSubmissionHandler - getInitialValue', () => {
 
   it('should get initial value for multicheckbox rendering', () => {
     // setup
-    const field: OHRIFormField = {
+    const field: FormField = {
       label: 'Past enrolled patient programs',
       type: 'obs',
       questionOptions: {
@@ -676,7 +676,7 @@ describe('ObsSubmissionHandler - getInitialValue', () => {
 
   it('should get initial value for date rendering', () => {
     // setup
-    const field: OHRIFormField = {
+    const field: FormField = {
       label: 'HTS Date',
       type: 'obs',
       questionOptions: {
@@ -701,7 +701,7 @@ describe('ObsSubmissionHandler - getInitialValue', () => {
 
   it('should get initial value for coded input types', () => {
     // setup
-    const field: OHRIFormField = {
+    const field: FormField = {
       label: 'HTS Result',
       type: 'obs',
       questionOptions: {
@@ -748,7 +748,7 @@ describe('ObsSubmissionHandler - getInitialValue', () => {
       };
     });
 
-    const field: OHRIFormField = {
+    const field: FormField = {
       label: 'Ever tested positive for HIV before?',
       type: 'obs',
       questionOptions: {
@@ -792,7 +792,7 @@ describe('ObsSubmissionHandler - getInitialValue', () => {
 
 describe('findObsByFormField', () => {
   const namespace = 'ohri-forms';
-  const fields: Array<OHRIFormField> = [
+  const fields: Array<FormField> = [
     {
       label: 'Field One',
       type: 'obs',

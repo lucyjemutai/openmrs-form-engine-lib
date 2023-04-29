@@ -1,26 +1,26 @@
-import { OHRIObsGroup } from '../components/group/ohri-obs-group.component';
-import { OHRIContentSwitcher } from '../components/inputs/content-switcher/ohri-content-switcher.component';
-import OHRIDate from '../components/inputs/date/ohri-date.component';
-import { OHRIEncounterLocationPicker } from '../components/inputs/location/ohri-encounter-location.component';
-import { OHRIMultiSelect } from '../components/inputs/multi-select/ohri-multi-select.component';
-import OHRINumber from '../components/inputs/number/ohri-number.component';
-import OHRIRadio from '../components/inputs/radio/ohri-radio.component';
-import OHRIDropdown from '../components/inputs/select/ohri-dropdown.component';
-import OHRITextArea from '../components/inputs/text-area/ohri-text-area.component';
-import OHRIText from '../components/inputs/text/ohri-text.component';
-import OHRIToggle from '../components/inputs/toggle/ohri-toggle.component';
-import { OHRIRepeat } from '../components/repeat/ohri-repeat.component';
-import { OHRIFieldValidator } from '../validators/ohri-form-validator';
-import { EncounterLocationSubmissionHandler, ObsSubmissionHandler } from '../submission-handlers/base-handlers';
-import { FieldValidator, PostSubmissionAction, SubmissionHandler } from '../api/types';
-import OHRIFixedValue from '../components/inputs/fixed-value/ohri-fixed-value.component';
-import OHRIMarkdown from '../components/inputs/markdown/ohri-markdown.component';
-import { OHRIDateValidator } from '../validators/ohri-date-validator';
-import { OHRIJSExpressionValidator } from '../validators/ohri-js-expression-validator';
 import { getGlobalStore } from '@openmrs/esm-framework';
-import { OHRIFormsStore } from '../constants';
-import OHRIExtensionParcel from '../components/extension/ohri-extension-parcel.component';
+import { ContentSwitcher } from '../components/inputs/content-switcher/content-switcher.component';
+import { DateValidator } from '../validators/date-validator';
+import { ExpressionValidator } from '../validators/js-expression-validator';
 import { EncounterDatetimeHandler } from '../submission-handlers/encounterDatetimeHandler';
+import { EncounterLocationPicker } from '../components/inputs/location/encounter-location.component';
+import { EncounterLocationSubmissionHandler, ObsSubmissionHandler } from '../submission-handlers/base-handlers';
+import { FieldValidator } from '../validators/form-validator';
+import { FormFieldValidator, PostSubmissionAction, SubmissionHandler } from '../types';
+import { FormsStore } from '../constants';
+import { ObsGroup } from '../components/group/obs-group.component';
+import { MultiSelect } from '../components/inputs/multi-select/multi-select.component';
+import { RepeatingField } from '../components/repeat/repeat.component';
+import DateField from '../components/inputs/date/date.component';
+import Dropdown from '../components/inputs/select/dropdown.component';
+import ExtensionParcel from '../components/extension/extension-parcel.component';
+import FixedValue from '../components/inputs/fixed-value/fixed-value.component';
+import Markdown from '../components/inputs/markdown/markdown.component';
+import Number from '../components/inputs/number/number.component';
+import Radio from '../components/inputs/radio/radio.component';
+import TextAreaField from '../components/inputs/text-area/text-area.component';
+import Text from '../components/inputs/text/text.component';
+import Toggle from '../components/inputs/toggle/toggle.component';
 
 export interface RegistryItem {
   id: string;
@@ -43,7 +43,7 @@ export interface CustomControlRegistration extends Omit<ComponentRegistration, '
   alias?: string;
 }
 interface ValidatorRegistryItem extends RegistryItem {
-  component: FieldValidator;
+  component: FormFieldValidator;
 }
 
 export interface FormsRegistryStoreState {
@@ -53,98 +53,98 @@ export interface FormsRegistryStoreState {
 
 export const baseFieldComponents: Array<CustomControlRegistration> = [
   {
-    id: 'OHRIText',
-    loadControl: () => Promise.resolve({ default: OHRIText }),
+    id: 'Text',
+    loadControl: () => Promise.resolve({ default: Text }),
     type: 'text',
     alias: '',
   },
   {
-    id: 'OHRIRadio',
-    loadControl: () => Promise.resolve({ default: OHRIRadio }),
+    id: 'Radio',
+    loadControl: () => Promise.resolve({ default: Radio }),
     type: 'radio',
     alias: '',
   },
   {
-    id: 'OHRIDate',
-    loadControl: () => Promise.resolve({ default: OHRIDate }),
+    id: 'DateField',
+    loadControl: () => Promise.resolve({ default: DateField }),
     type: 'date',
     alias: '',
   },
   {
-    id: 'OHRINumber',
-    loadControl: () => Promise.resolve({ default: OHRINumber }),
+    id: 'Number',
+    loadControl: () => Promise.resolve({ default: Number }),
     type: 'number',
     alias: 'numeric',
   },
   {
-    id: 'OHRIMultiSelect',
-    loadControl: () => Promise.resolve({ default: OHRIMultiSelect }),
+    id: 'MultiSelect',
+    loadControl: () => Promise.resolve({ default: MultiSelect }),
     type: 'checkbox',
     alias: 'multiCheckbox',
   },
   {
-    id: 'OHRIContentSwitcher',
-    loadControl: () => Promise.resolve({ default: OHRIContentSwitcher }),
+    id: 'ContentSwitcher',
+    loadControl: () => Promise.resolve({ default: ContentSwitcher }),
     type: 'content-switcher',
     alias: '',
   },
   {
-    id: 'OHRIEncounterLocationPicker',
-    loadControl: () => Promise.resolve({ default: OHRIEncounterLocationPicker }),
+    id: 'EncounterLocationPicker',
+    loadControl: () => Promise.resolve({ default: EncounterLocationPicker }),
     type: 'encounter-location',
     alias: '',
   },
   {
-    id: 'OHRIDropdown',
-    loadControl: () => Promise.resolve({ default: OHRIDropdown }),
+    id: 'Dropdown',
+    loadControl: () => Promise.resolve({ default: Dropdown }),
     type: 'select',
     alias: '',
   },
   {
-    id: 'OHRITextArea',
-    loadControl: () => Promise.resolve({ default: OHRITextArea }),
+    id: 'TextAreaField',
+    loadControl: () => Promise.resolve({ default: TextAreaField }),
     type: 'textarea',
     alias: '',
   },
   {
-    id: 'OHRIToggle',
-    loadControl: () => Promise.resolve({ default: OHRIToggle }),
+    id: 'Toggle',
+    loadControl: () => Promise.resolve({ default: Toggle }),
     type: 'toggle',
     alias: '',
   },
   {
-    id: 'OHRIObsGroup',
-    loadControl: () => Promise.resolve({ default: OHRIObsGroup }),
+    id: 'ObsGroup',
+    loadControl: () => Promise.resolve({ default: ObsGroup }),
     type: 'group',
     alias: '',
   },
   {
-    id: 'OHRIRepeat',
-    loadControl: () => Promise.resolve({ default: OHRIRepeat }),
+    id: 'RepeatingField',
+    loadControl: () => Promise.resolve({ default: RepeatingField }),
     type: 'repeating',
     alias: '',
   },
   {
-    id: 'OHRIFixedValue',
-    loadControl: () => Promise.resolve({ default: OHRIFixedValue }),
+    id: 'FixedValue',
+    loadControl: () => Promise.resolve({ default: FixedValue }),
     type: 'fixed-value',
     alias: '',
   },
   {
-    id: 'OHRIMarkdown',
-    loadControl: () => Promise.resolve({ default: OHRIMarkdown }),
+    id: 'Markdown',
+    loadControl: () => Promise.resolve({ default: Markdown }),
     type: 'markdown',
     alias: '',
   },
   {
-    id: 'OHRIExtensionParcel',
-    loadControl: () => Promise.resolve({ default: OHRIExtensionParcel }),
+    id: 'ExtensionParcel',
+    loadControl: () => Promise.resolve({ default: ExtensionParcel }),
     type: 'extension-widget',
     alias: '',
   },
   {
-    id: 'OHRIDateTime',
-    loadControl: () => Promise.resolve({ default: OHRIDate }),
+    id: 'DateTime',
+    loadControl: () => Promise.resolve({ default: DateField }),
     type: 'datetime',
     alias: '',
   },
@@ -175,23 +175,23 @@ const baseHandlers: Array<RegistryItem> = [
 
 const fieldValidators: Array<ValidatorRegistryItem> = [
   {
-    id: 'OHRIBaseValidator',
-    component: OHRIFieldValidator,
+    id: 'BaseValidator',
+    component: FieldValidator,
   },
   {
     id: 'date',
-    component: OHRIDateValidator,
+    component: DateValidator,
   },
   {
     id: 'js_expression',
-    component: OHRIJSExpressionValidator,
+    component: ExpressionValidator,
   },
 ];
 
 export const getFieldComponent = renderType => {
   let lazy = baseFieldComponents.find(item => item.type == renderType || item?.alias == renderType)?.loadControl;
   if (!lazy) {
-    lazy = getOHRIFormsStore().customControls.find(item => item.type == renderType || item?.alias == renderType)
+    lazy = getFormsStore().customControls.find(item => item.type == renderType || item?.alias == renderType)
       ?.loadControl;
   }
   return lazy?.();
@@ -205,33 +205,33 @@ export function addHandler(handler: RegistryItem) {
   baseHandlers.push(handler);
 }
 
-export function addvalidator(validator: ValidatorRegistryItem) {
+export function addValidator(validator: ValidatorRegistryItem) {
   if (validator) {
     fieldValidators.push(validator);
   }
 }
 
-function getOHRIFormsStore(): FormsRegistryStoreState {
-  return getGlobalStore<FormsRegistryStoreState>(OHRIFormsStore, {
+function getFormsStore(): FormsRegistryStoreState {
+  return getGlobalStore<FormsRegistryStoreState>(FormsStore, {
     customControls: [],
     postSubmissionActions: [],
   }).getState();
 }
 
-export function getValidator(id: string): FieldValidator {
+export function getValidator(id: string): FormFieldValidator {
   return fieldValidators.find(validator => validator.id == id)?.component || fieldValidators[0].component;
 }
 
 export function registerControl(registration: CustomControlRegistration) {
-  getOHRIFormsStore().customControls.push(registration);
+  getFormsStore().customControls.push(registration);
 }
 
 export function registerPostSubmissionAction(registration: PostSubmissionActionRegistration) {
-  getOHRIFormsStore().postSubmissionActions.push(registration);
+  getFormsStore().postSubmissionActions.push(registration);
 }
 
 export function getPostSubmissionActionById(actionId: string) {
-  const lazy = getOHRIFormsStore().postSubmissionActions.find(registration => registration.id == actionId)?.load;
+  const lazy = getFormsStore().postSubmissionActions.find(registration => registration.id == actionId)?.load;
   if (lazy) {
     return lazy();
   } else {

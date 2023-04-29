@@ -3,15 +3,15 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 dayjs.extend(duration);
 
-import { OHRIFormField } from '../api/types';
+import { FormField } from '../types';
 import { FormNode } from './expression-runner';
-import { isEmpty as isValueEmpty } from '../validators/ohri-form-validator';
+import { isEmpty as isValueEmpty } from '../validators/form-validator';
 import * as apiFunctions from '../api/api';
 
 export class CommonExpressionHelpers {
   node: FormNode = null;
   patient: any = null;
-  allFields: OHRIFormField[] = [];
+  allFields: FormField[] = [];
   allFieldValues: Record<string, any> = {};
   allFieldsKeys: string[] = [];
   api = apiFunctions;
@@ -20,7 +20,7 @@ export class CommonExpressionHelpers {
   constructor(
     node: FormNode,
     patient: any,
-    allFields: OHRIFormField[],
+    allFields: FormField[],
     allFieldValues: Record<string, any>,
     allFieldsKeys: string[],
   ) {
@@ -270,7 +270,7 @@ export class CommonExpressionHelpers {
   };
 }
 
-export function registerDependency(node: FormNode, determinant: OHRIFormField) {
+export function registerDependency(node: FormNode, determinant: FormField) {
   if (!node || !determinant) {
     return;
   }

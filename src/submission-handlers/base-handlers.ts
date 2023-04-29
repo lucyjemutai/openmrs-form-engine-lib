@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 import { getConcept } from '../api/api';
 import { ConceptTrue } from '../constants';
-import { EncounterContext } from '../ohri-form-context';
-import { OHRIFormField, OpenmrsEncounter, OpenmrsObs, SubmissionHandler } from '../api/types';
-import { parseToLocalDateTime } from '../utils/ohri-form-helper';
+import { EncounterContext } from '../form-context';
+import { FormField, OpenmrsEncounter, OpenmrsObs, SubmissionHandler } from '../types';
+import { parseToLocalDateTime } from '../utils/form-helper';
 
 // Temporarily holds observations that have already been binded with matching fields
 let assignedObsIds: string[] = [];
@@ -13,7 +13,7 @@ let assignedObsIds: string[] = [];
  */
 
 export const ObsSubmissionHandler: SubmissionHandler = {
-  handleFieldSubmission: (field: OHRIFormField, value: any, context: EncounterContext) => {
+  handleFieldSubmission: (field: FormField, value: any, context: EncounterContext) => {
     if (field.questionOptions.rendering == 'checkbox') {
       return multiSelectObsHandler(field, value, context);
     }
@@ -42,7 +42,7 @@ export const ObsSubmissionHandler: SubmissionHandler = {
     }
     return field.value;
   },
-  getInitialValue: (encounter: OpenmrsEncounter, field: OHRIFormField, allFormFields: Array<OHRIFormField>) => {
+  getInitialValue: (encounter: OpenmrsEncounter, field: FormField, allFormFields: Array<FormField>) => {
     let obs = findObsByFormField(encounter.obs, assignedObsIds, field);
     const rendering = field.questionOptions.rendering;
     let parentField = null;
@@ -102,7 +102,7 @@ export const ObsSubmissionHandler: SubmissionHandler = {
     }
     return '';
   },
-  getDisplayValue: (field: OHRIFormField, value: any) => {
+  getDisplayValue: (field: FormField, value: any) => {
     const rendering = field.questionOptions.rendering;
     if (!field.value) {
       return null;
@@ -121,7 +121,7 @@ export const ObsSubmissionHandler: SubmissionHandler = {
     }
     return value;
   },
-  getPreviousValue: (field: OHRIFormField, encounter: OpenmrsEncounter, allFormFields: Array<OHRIFormField>) => {
+  getPreviousValue: (field: FormField, encounter: OpenmrsEncounter, allFormFields: Array<FormField>) => {
     let obs = findObsByFormField(encounter.obs, assignedObsIds, field);
     const rendering = field.questionOptions.rendering;
     let parentField = null;
@@ -164,16 +164,16 @@ export const ObsSubmissionHandler: SubmissionHandler = {
  * Encounter location handler
  */
 export const EncounterLocationSubmissionHandler: SubmissionHandler = {
-  handleFieldSubmission: (field: OHRIFormField, value: any, context: EncounterContext) => {
+  handleFieldSubmission: (field: FormField, value: any, context: EncounterContext) => {
     return null;
   },
-  getInitialValue: (encounter: any, field: OHRIFormField) => {
+  getInitialValue: (encounter: any, field: FormField) => {
     return {
       display: encounter.location.name,
       uuid: encounter.location.uuid,
     };
   },
-  getDisplayValue: (field: OHRIFormField, value) => {
+  getDisplayValue: (field: FormField, value) => {
     return value.display;
   },
 };
@@ -182,7 +182,7 @@ export const EncounterLocationSubmissionHandler: SubmissionHandler = {
 // Helpers
 //////////////////////////////
 
-const constructObs = (value: any, context: EncounterContext, field: OHRIFormField) => {
+const constructObs = (value: any, context: EncounterContext, field: FormField) => {
   return {
     person: context.patient?.id,
     obsDatetime: context.encounterDate,
@@ -206,7 +206,7 @@ const constructObs = (value: any, context: EncounterContext, field: OHRIFormFiel
 export const findObsByFormField = (
   obsList: Array<OpenmrsObs>,
   claimedObsIds: string[],
-  field: OHRIFormField,
+  field: FormField,
 ): OpenmrsObs => {
   const obs = obsList.find(o => o.formFieldPath == `ohri-forms-${field.id}`);
   // We shall fall back to mapping by the associated concept
@@ -221,7 +221,7 @@ export const findObsByFormField = (
   return obs;
 };
 
-const multiSelectObsHandler = (field: OHRIFormField, values: Array<string>, context: EncounterContext) => {
+const multiSelectObsHandler = (field: FormField, values: Array<string>, context: EncounterContext) => {
   if (!field.value) {
     field.value = [];
   }

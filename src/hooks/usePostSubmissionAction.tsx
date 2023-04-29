@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { PostSubmissionAction } from '../api/types';
+import { PostSubmissionAction } from '../types';
 import { getPostSubmissionActionById } from '../registry/registry';
 
 export function usePostSubmissionAction(actionIds: Array<string>) {

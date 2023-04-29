@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { EncounterContext, inferInitialValueFromDefaultFieldValue, isEmpty } from '..';
-import { OHRIFormField, OpenmrsEncounter } from '../api/types';
+import { FormField, OpenmrsEncounter } from '../types';
 import { getHandler } from '../registry/registry';
 import { evaluateAsyncExpression } from '../utils/expression-runner';
 
 export function useInitialValues(
-  formFields: OHRIFormField[],
+  formFields: FormField[],
   encounter: OpenmrsEncounter,
   encounterContext: EncounterContext,
 ) {

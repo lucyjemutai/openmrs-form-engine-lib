@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
-import { OHRIValueDisplay } from '../value/ohri-value.component';
+import { ValueDisplay } from '../value/value.component';
 import styles from './previous-value-review.scss';
 
 export const PreviousValueReview: React.FC<{
@@ -12,7 +12,7 @@ export const PreviousValueReview: React.FC<{
 }> = ({ value, displayText, setValue, hideHeader }) => {
   const { t } = useTranslation();
   return (
-    <div className={styles.formField} style={{ marginLeft: '2rem', maxWidth: '19rem' }}>
+    <div className={styles.previousValue}>
       {!hideHeader && (
         <div>
           <span className="cds--label">{t('previously', 'Previously')}</span>
@@ -20,12 +20,12 @@ export const PreviousValueReview: React.FC<{
       )}
       <div className={styles.row}>
         <div style={{ width: '100%' }}>
-          <OHRIValueDisplay value={displayText} />
+          <ValueDisplay value={displayText} />
         </div>
         <div style={{ width: '100%', marginLeft: '1rem' }}>
           <Button
+            className={styles.button}
             kind="ghost"
-            style={{ verticalAlign: 'baseline' }}
             onClick={e => {
               e.preventDefault();
               setValue(value);

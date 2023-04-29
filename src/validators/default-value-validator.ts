@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
-import { FieldValidator, OHRIFormField } from '../api/types';
+import { FormFieldValidator, FormField } from '../types';
 
-export const OHRIDefaultFieldValueValidator: FieldValidator = {
-  validate: (field: OHRIFormField, value: any) => {
+export const DefaultFieldValueValidator: FormFieldValidator = {
+  validate: (field: FormField, value: any) => {
     const codedTypes = ['radio', 'checkbox', 'select', 'content-switcher'];
     if (codedTypes.includes(field.questionOptions.rendering)) {
       // check whether value exists in answers

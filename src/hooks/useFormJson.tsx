@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { OHRIFormSchema } from '../api/types';
+import { OHRIFormSchema } from '../types';
 import { isTrue } from '../utils/boolean-utils';
 import { applyFormIntent } from '../utils/forms-loader';
-import { fetchOpenMRSForm, fetchClobData } from '../api/api';
+import { fetchOpenMRSForm, fetchClobdata } from '../api/api';
 
 export function useFormJson(formUuid: string, rawFormJson: any, encounterUuid: string, formSessionIntent: string) {
   const [formJson, setFormJson] = useState<OHRIFormSchema>(null);
@@ -41,7 +41,7 @@ export async function loadFormJson(
   formSessionIntent?: string,
 ): Promise<OHRIFormSchema> {
   const openmrsFormResponse = await fetchOpenMRSForm(formIdentifier);
-  const clobDataResponse = await fetchClobData(openmrsFormResponse);
+  const clobDataResponse = await fetchClobdata(openmrsFormResponse);
   const formJson: OHRIFormSchema = clobDataResponse ?? rawFormJson;
   const subformRefs = extractSubformRefs(formJson);
   const subforms = await loadSubforms(subformRefs, formSessionIntent);
@@ -81,7 +81,7 @@ function validateFormsArgs(formUuid: string, rawFormJson: any): Error {
  * Refines the input form JSON object by parsing it, removing inline subforms, setting the encounter type, and applying form intents if provided.
  * @param {any} formJson - The input form JSON object or string.
  * @param {string} [formSessionIntent] - The optional form session intent.
- * @returns {OHRIFormSchema} - The refined form JSON object of type OHRIFormSchema.
+ * @returns {OHRIFormSchema} - The refined form JSON object of type FormSchema.
  */
 function refineFormJson(formJson: any, formSessionIntent?: string): OHRIFormSchema {
   const parsedFormJson: OHRIFormSchema = parseFormJson(formJson);
@@ -93,7 +93,7 @@ function refineFormJson(formJson: any, formSessionIntent?: string): OHRIFormSche
 /**
  * Parses the input form JSON and returns a deep copy of the object.
  * @param {any} formJson - The input form JSON object or string.
- * @returns {OHRIFormSchema} - The parsed form JSON object of type OHRIFormSchema.
+ * @returns {OHRIFormSchema} - The parsed form JSON object of type FormSchema.
  */
 function parseFormJson(formJson: any): OHRIFormSchema {
   return typeof formJson === 'string' ? JSON.parse(formJson) : JSON.parse(JSON.stringify(formJson));
@@ -101,7 +101,7 @@ function parseFormJson(formJson: any): OHRIFormSchema {
 
 /**
  * Removes inline subforms from the form JSON and replaces them with their pages if the encounter type matches.
- * @param {OHRIFormSchema} formJson - The input form JSON object of type OHRIFormSchema.
+ * @param {OHRIFormSchema} formJson - The input form JSON object of type FormSchema.
  * @param {string} formSessionIntent - The form session intent.
  */
 function removeInlineSubforms(formJson: OHRIFormSchema, formSessionIntent: string): void {
@@ -120,7 +120,7 @@ function removeInlineSubforms(formJson: OHRIFormSchema, formSessionIntent: strin
 
 /**
  * Sets the encounter type for the form JSON if it's provided through the `encounter` attribute.
- * @param {OHRIFormSchema} formJson - The input form JSON object of type OHRIFormSchema.
+ * @param {OHRIFormSchema} formJson - The input form JSON object of type FormSchema.
  */
 function setEncounterType(formJson: OHRIFormSchema): void {
   if (formJson.encounter && typeof formJson.encounter === 'string' && !formJson.encounterType) {

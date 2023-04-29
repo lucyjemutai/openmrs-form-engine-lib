@@ -1,4 +1,4 @@
-import { OHRIFormField } from '../api/types';
+import { FormField } from '../types';
 import { ConceptFalse, ConceptTrue } from '../constants';
 import { registerDependency } from './common-expression-helpers';
 import { FormNode } from './expression-runner';
@@ -58,7 +58,7 @@ export function parseExpression(expression: string): string[] {
  * @returns The expression with linked field references
  */
 export function linkReferencedFieldValues(
-  fields: OHRIFormField[],
+  fields: FormField[],
   fieldValues: Record<string, any>,
   tokens: string[],
 ): string {
@@ -117,7 +117,7 @@ export function hasParentheses(expression: string): boolean {
   return re.test(expression);
 }
 
-export function replaceFieldRefWithValuePath(field: OHRIFormField, value: any, token: string): string {
+export function replaceFieldRefWithValuePath(field: FormField, value: any, token: string): string {
   if (token.includes(`useFieldValue('${field.id}')`)) {
     return token;
   }
@@ -136,11 +136,7 @@ export function replaceFieldRefWithValuePath(field: OHRIFormField, value: any, t
  * @param tokens Expression tokens
  * @param fields All fields
  */
-export function findAndRegisterReferencedFields(
-  fieldNode: FormNode,
-  tokens: string[],
-  fields: Array<OHRIFormField>,
-): void {
+export function findAndRegisterReferencedFields(fieldNode: FormNode, tokens: string[], fields: Array<FormField>): void {
   tokens.forEach(token => {
     if (hasParentheses(token)) {
       extractArgs(token).forEach(arg => {
@@ -152,7 +148,7 @@ export function findAndRegisterReferencedFields(
   });
 }
 
-function findReferencedFieldIfExists(fieldId: string, fields: OHRIFormField[]): OHRIFormField | undefined {
+function findReferencedFieldIfExists(fieldId: string, fields: FormField[]): FormField | undefined {
   // check if field id has trailing quotes
   if (/^'+|'+$/.test(fieldId)) {
     fieldId = fieldId.replace(/^'|'$/g, '');

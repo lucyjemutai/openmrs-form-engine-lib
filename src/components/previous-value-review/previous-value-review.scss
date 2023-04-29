@@ -8,6 +8,16 @@
   color: colors.$gray-70;
 }
 
+.previousValue {
+  @extend .formField;
+  margin-left: 2rem; 
+  max-width: 19rem;
+}
+
+.button {
+  vertical-align: baseline;
+}
+
 .row {
   display: flex;
   flex-direction: row;

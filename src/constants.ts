@@ -6,5 +6,5 @@ export const encounterRepresentation =
   'patient:(uuid,display),encounterProviders:(uuid,provider:(uuid,name)),' +
   'obs:(uuid,obsDatetime,voided,groupMembers,formFieldNamespace,formFieldPath,concept:(uuid,name:(uuid,name)),value:(uuid,name:(uuid,name),' +
   'names:(uuid,conceptNameType,name))))';
-export const OHRIFormsStore = 'ohri-forms-engine-store';
+export const FormsStore = 'ohri-forms-engine-store';
 export const PatientChartWorkspaceHeaderSlot = 'patient-chart-workspace-header-slot';

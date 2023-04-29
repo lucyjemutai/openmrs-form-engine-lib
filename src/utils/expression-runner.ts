@@ -1,9 +1,9 @@
-import { OHRIFormField, OHRIFormPage, OHRIFormSection } from '../api/types';
+import { FormField, FormPage, FormSection } from '../types';
 import { CommonExpressionHelpers } from './common-expression-helpers';
 import { findAndRegisterReferencedFields, linkReferencedFieldValues, parseExpression } from './expression-parser';
 
 export interface FormNode {
-  value: OHRIFormPage | OHRIFormSection | OHRIFormField;
+  value: FormPage | FormSection | FormField;
   type: 'field' | 'page' | 'section';
 }
 
@@ -16,7 +16,7 @@ export interface ExpressionContext {
 export function evaluateExpression(
   expression: string,
   node: FormNode,
-  fields: Array<OHRIFormField>,
+  fields: Array<FormField>,
   fieldValues: Record<string, any>,
   context: ExpressionContext,
 ): any {
@@ -72,7 +72,7 @@ export function evaluateExpression(
 export async function evaluateAsyncExpression(
   expression: string,
   node: FormNode,
-  fields: Array<OHRIFormField>,
+  fields: Array<FormField>,
   fieldValues: Record<string, any>,
   context: ExpressionContext,
 ): Promise<any> {

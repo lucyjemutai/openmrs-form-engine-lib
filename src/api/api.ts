@@ -1,9 +1,9 @@
-import { openmrsFetch, openmrsObservableFetch } from '@openmrs/esm-framework';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { openmrsFetch, openmrsObservableFetch } from '@openmrs/esm-framework';
 import { encounterRepresentation } from '../constants';
-import { OpenmrsForm } from './types';
 import { isUuid } from '../utils/boolean-utils';
+import { OpenmrsForm } from '../types';
 
 export function saveEncounter(abortController: AbortController, payload, encounterUuid?: string) {
   const url = !!encounterUuid ? `/ws/rest/v1/encounter/${encounterUuid}?v=full` : `/ws/rest/v1/encounter?v=full`;
@@ -82,7 +82,7 @@ export async function fetchOpenMRSForm(nameOrUUID: string): Promise<OpenmrsForm 
  * @param {OpenmrsForm} form - The OpenMRS form object.
  * @returns {Promise<any | null>} - A Promise that resolves to the fetched ClobData or null if not found.
  */
-export async function fetchClobData(form: OpenmrsForm): Promise<any | null> {
+export async function fetchClobdata(form: OpenmrsForm): Promise<any | null> {
   if (!form) {
     return null;
   }
