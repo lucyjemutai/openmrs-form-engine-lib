@@ -426,48 +426,39 @@ export const OHRIEncounterForm: React.FC<OHRIEncounterFormProps> = ({
       .filter((field) => !field.questionOptions.isTransient && field.questionOptions.rendering !== 'file')
       .forEach((field) => {
         if (field.type == 'obsGroup') {
-          const obsGroup = {
-            person: patient?.id,
-            obsDatetime: encounterDate,
-            concept: field.questionOptions.concept,
-            location: encounterLocation,
-            order: null,
-            groupMembers: [],
-            uuid: field.uuid,
-            voided: false,
-          };
-
-          //validate obs group count against limit
-          const limit = field.questionOptions.repeatOptions?.limit;
-          const counter = obsGroupCounter?.filter((eachItem) => eachItem.fieldId === field.id)[0]?.obsGroupCount;
-
-          if (limit && counter && counter !== Number(limit)) {
-            setIsSubmitting(false);
-            showToast({
-              description: 'obsGroup count does not match limit specified',
-              title: 'Invalid entry',
-              kind: 'error',
-              critical: true,
-            });
-            throw new Error('obsGroup count does not match limit specified');
-          }
-
-          let hasValue = false;
-          field.questions.forEach((groupedField) => {
-            if (groupedField.value) {
-              hasValue = true;
-              if (Array.isArray(groupedField.value)) {
-                obsGroup.groupMembers.push(...groupedField.value);
-              } else {
-                obsGroup.groupMembers.push(groupedField.value);
+          const obsGroupUuid = encounter?.obs?.find(m => m.concept.uuid == field.questionOptions.concept)?.uuid;
+  
+          // Check if the obsGroupUuid is not null before processing
+          if (obsGroupUuid !== null && obsGroupUuid !== undefined) {
+            const obsGroup = {
+              person: patient?.id,
+              obsDatetime: encounterDate,
+              concept: field.questionOptions.concept,
+              location: encounterLocation,
+              order: null,
+              groupMembers: [],
+              uuid: obsGroupUuid,
+              voided: false,
+            };
+  
+            let hasValue = false;
+            field.questions.forEach((groupedField) => {
+              if (groupedField.value) {
+                hasValue = true;
+                if (Array.isArray(groupedField.value)) {
+                  obsGroup.groupMembers.push(...groupedField.value);
+                } else {
+                  obsGroup.groupMembers.push(groupedField.value);
+                }
               }
-            }
-          });
-          hasValue && addObs(obsForSubmission, obsGroup);
+            });
+  
+            hasValue && addObs(obsForSubmission, obsGroup);
+          }
         } else {
           addObs(obsForSubmission, field.value);
         }
-      });
+      }); 
 
     // Add voided obs groups
     obsGroupsToVoid.forEach((obs) => addObs(obsForSubmission, obs));
